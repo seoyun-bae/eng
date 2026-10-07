@@ -1,0 +1,44 @@
+#include <stdio.h>
+
+int main() {
+    int s1 = 4, s2 = 8, s3 = 2; 
+    int input, g1, g2, g3;
+    int strike, ball, attempt = 0, max_attempts = 5;
+
+    printf("===============\n [경고] 1급 보안 구역에 접근하셨습니다.\n 3자리 보안 코드를 입력하십시오.\n===============\n");
+
+    while (attempt < max_attempts) {
+        strike = 0; ball = 0;
+        printf("\n> 코드 입력 (예: 123) [%d회 남음]: ", max_attempts - attempt);
+        scanf("%d", &input);
+        
+        g1 = input / 100; g2 = (input / 10) % 10; g3 = input % 10;
+        
+        if (g1 == g2 || g2 == g3 || g1 == g3) {
+            printf("[오류] 중복된 숫자는 사용할 수 없습니다.\n"); continue; 
+        }
+
+        if (g1 == s1) strike++; if (g2 == s2) strike++; if (g3 == s3) strike++;
+        if (g1 == s2 || g1 == s3) ball++; if (g2 == s1 || g2 == s3) ball++; if (g3 == s1 || g3 == s2) ball++;
+
+        if (strike == 3) {
+            printf("\n[접근 허가] 시스템 잠금이 해제되었습니다.\n"); goto SUCCESS;
+        } else {
+            printf("=> 결과: %d Strike, %d Ball\n경고 레벨: ", strike, ball);
+            for (int i = 0; i <= attempt; i++) { for (int j = 0; j <= i; j++) printf("*"); printf(" "); }
+            printf("\n");
+        }
+        attempt++;
+    }
+    printf("\n[접근 거부] 시스템을 봉쇄합니다.\n"); return 0;
+
+SUCCESS:
+    printf("\n--- 시스템 부팅 중 ---\n");
+    for (int i = 1; i <= 15; i++) {
+        if (i % 3 == 0 && i % 5 == 0) printf("System Rebooted!\n");
+        else if (i % 3 == 0) printf("Data Sync...\n");
+        else if (i % 5 == 0) printf("Network OK...\n");
+        else printf("Loading %d%%\n", i * 5);
+    }
+    return 0;
+}
